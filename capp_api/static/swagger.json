@@ -1,0 +1,1219 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This Documentation of APIs in CAPP projects",
+    "version": "0.0.0",
+    "title": "Documentation of CAPP projects",
+  },
+  "tags": [
+    {
+      "name": "generate otp",
+      "description": "Generating otp for a phone number",
+    },
+    {
+      "name": "verify otp",
+      "description": "Verifying otp of users"
+    },
+    {
+      "name": "user information",
+      "description": "Operations about user",
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/generate_otp": {
+      "post": {
+        "tags": [
+          "generate otp"
+        ],
+        "summary": "Getting phone number and generate otp for it.",
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "phone_number",
+            "description": "User phone_number for registering ",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "phone_number":{
+                  "type": "string",
+                  "minLength": 9,
+                  "maxLength": 17,
+                  "format": "phone number",
+                  }
+              },
+              "example":{
+                "phone_number": "+9989999999999"
+                }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "request is successful"
+          },
+          "406": {
+            "description": "Request is not acceptable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+        },
+      },
+    },
+    "/verify_otp": {
+      "post": {
+        "tags": [
+          "verify otp"
+        ],
+        "summary": "Verifying phone_number of user by checking otp code.",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone_number",
+            "in": "body",
+            "description": "User phone_number",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "phone_number":{
+                  "type": "string",
+                  "minLength": 9,
+                  "maxLength": 17,
+                  "format": "phone number",
+                  }
+              },
+              "example":{
+                "phone_number": "+9989999999999"
+                }
+            }
+          },
+          {
+            "name": "otp",
+            "in": "body",
+            "description": "Sent otp to entered phone number",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "otp":{
+                  "type": "number",
+                  "minLength": 6,
+                  "maxLength": 6,
+                  "format": "integer",
+                  }
+              },
+              "example":{
+                "otp": 123456
+                }
+            }
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "successful verifying and getting token",
+            "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "otp": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          },
+          "404": {
+            "description": "There isn't this user."
+          }
+        },
+      }
+    },
+    "/user_details": {
+        "put": {
+        "tags": [
+          "user information"
+        ],
+        "summary": "Changing details of users",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+            {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "User email",
+            "required": false,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "email":{
+                  "type": "string",
+                  "format": "email",
+                  }
+              },
+              "example":{
+                "email": "example@gmail.com"
+                }
+            }
+          },
+          {
+            "name": "first_name",
+            "in": "body",
+            "description": "User first_name",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "first_name":{
+                  "type": "string",
+                  "maxLength": 20,
+                  }
+              },
+              "example":{
+                "first_name": "Majid"
+                }
+            }
+          },
+          {
+            "name": "last_name",
+            "in": "body",
+            "description": "User last_name",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "last_name":{
+                  "type": "string",
+                  "maxLength": 20,
+                  }
+              },
+              "example":{
+                "last_name": "Adibian"
+                }
+            }
+          },
+          {
+            "name": "image",
+            "in": "body",
+            "description": "User profile image",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "image":{
+                  "type": "image",
+                  }
+              },
+            }
+          },
+          {
+            "name": "username",
+            "in": "body",
+            "description": "User username to be accessible for other user",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "username":{
+                  "type": "string",
+                 },
+              },
+              "example":{
+                "username": "Zeus33"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "successful changing user details",
+            "schema": {
+                "$ref": "#/definitions/User"
+            }
+
+          },
+          "400": {
+            "description": "Invalid status value"
+          },
+          "404": {
+            "description": "There isn't this user."
+          }
+        },
+      },
+      "get": {
+        "tags": [
+          "user information"
+        ],
+        "summary": "Getting user information",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "406": {
+            "description": "User is not verified."
+          }
+        },
+      }
+    },
+    "/credit": {
+      "get": {
+        "tags": [
+          "credit"
+        ],
+        "summary": "Getting information of user credit",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "successful getting data",
+            "schema": {
+              "$ref": "#/definitions/Credit"
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "406": {
+            "description": "User is not verified or Credit is not created"
+          }
+        },
+      },
+      "post": {
+        "tags": [
+          "credit"
+        ],
+        "summary": "Create user credit",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+            {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "credit",
+            "in": "data",
+            "description": "credit for user",
+            "required": false,
+            "type": "integer",
+            "format": "int64",
+            "default": 0,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "credit":{
+                  "type": "number",
+                  }
+              },
+              "example":{
+                "created": 500000
+                }
+            }
+          },
+          {
+            "name": "currency",
+            "in": "data",
+            "description": "currency of credit",
+            "required": true,
+            "type": "string",
+            "default": "USD",
+            "schema": {
+              "type": "object",
+              "properties":{
+                "currency":{
+                  "type": "string",
+                  "format": "USD or IRR",
+                  }
+              },
+              "example":{
+                "created": "IRR"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "201": {
+            "description": "successful creation",
+            "schema": {
+              "$ref": "#/definitions/Credit"
+            }
+          },
+          "406": {
+            "description": "user is not verified"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        },
+      },
+      "put": {
+        "tags": [
+          "credit"
+        ],
+        "summary": "Changing credit money",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+            {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "credit",
+            "in": "data",
+            "description": "credit for user",
+            "required": false,
+            "type": "integer",
+            "format": "int64",
+            "default": 0,
+            "schema": {
+              "type": "object",
+              "properties":{
+                "credit":{
+                  "type": "number",
+                  }
+              },
+              "example":{
+                "created": 500000
+                }
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "successful updating",
+            "schema": {
+              "$ref": "#/definitions/Credit"
+            }
+          },
+          "400": {
+            "description": "pad request"
+          },
+          "406": {
+            "description": "user is not verified or credit is not created"
+          }
+        },
+      }
+    },
+    "/consultant": {
+      "post": {
+        "tags": [
+          "consultant"
+        ],
+        "summary": "creating new consultant",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+         {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "type",
+            "in": "body",
+            "description": "type of consultant",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "sports"
+                }
+            }
+          },
+          {
+            "name": "presentation",
+            "in": "body",
+            "description": "presentation of consultant",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties":{
+                "presentation":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "presentation": "some thing about you as consultant"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "201": {
+            "description": "successful creation",
+            "schema": {
+              "$ref": "#/definitions/consultant"
+            }
+          },
+          "400": {
+            "description": "bad request",
+          },
+          "406": {
+            "description": "not acceptable request",
+          },
+        },
+      },
+      "get": {
+        "tags": [
+          "consultant"
+        ],
+        "summary": "Getting all consultant that user create",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "successful getting data",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consultant"
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+          },
+          "406": {
+            "description": "user is not verified",
+          },
+        },
+      },
+      "put": {
+        "tags": [
+          "consultant"
+        ],
+        "summary": "changing one of consultant info that user create",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "old_type",
+            "in": "body",
+            "description": "old type of consultant",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "old_type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "old_type": "sports"
+                }
+            }
+          },
+          {
+            "name": "type",
+            "in": "body",
+            "description": "new type of consultant",
+            "required": false,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "educational"
+                }
+            }
+          },
+          {
+            "name": "presentation",
+            "in": "body",
+            "description": "new presentation of consultant",
+            "required": false,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "presentation":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "presentation": "new presentation"
+                }
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "successful getting data",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consultant"
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+          },
+          "406": {
+            "description": "user is not verified",
+          },
+        },
+      },
+    },
+    "/consultant/{type}": {
+      "delete": {
+        "tags": [
+          "consultant"
+        ],
+        "summary": "Deleting one consultant that have this type",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+         {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "Type of consultant",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "educational"
+                }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful deletion",
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "406": {
+            "description": "Not verified user"
+          }
+        }
+      }
+    },
+    "/price": {
+      "post": {
+        "tags": [
+          "price"
+        ],
+        "summary": "Creating prices for consultant",
+        "description": "This request remove all prices and create new ones",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "type",
+            "in": "body",
+            "description": "type of consultant that wants to add prices",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "educational"
+                }
+            }
+          },
+          {
+            "name": "items",
+            "in": "body",
+            "description": "containing times and cost of prices",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Price"
+              }
+            }
+          },
+        ],
+        "responses": {
+          "201": {
+            "description": "successful creation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Price"
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+          },
+          "406": {
+            "description": "not acceptable",
+          }
+        },
+      },
+      "put": {
+        "tags": [
+          "price"
+        ],
+        "summary": "Changing prices for consultant",
+        "description": "This request remove all prices and create new ones",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "name": "type",
+            "in": "body",
+            "description": "type of consultant that wants to add prices",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "educational"
+                }
+            }
+          },
+          {
+            "name": "items",
+            "in": "body",
+            "description": "containing times and cost of prices",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Price"
+              }
+            }
+          },
+        ],
+        "responses": {
+          "201": {
+            "description": "successful changing",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Price"
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+          },
+          "406": {
+            "description": "not acceptable",
+          }
+        },
+      }
+    },
+    "/price/{type}": {
+      "get": {
+        "tags": [
+          "price"
+        ],
+        "summary": "Getting all prices of one consultant",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+         {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "Type of consultant that prices belongs to him",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "educational"
+                }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful getting",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Price"
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "406": {
+            "description": "Not verified user or consultant with this type doesn't exist"
+          }
+        }
+      }
+    },
+    "/price/{type}/{cost}": {
+      "delete": {
+        "tags": [
+          "price"
+        ],
+        "summary": "Deletion all or one of price of one consultant",
+        "description": "Deletion all prices if cost is 'all' and deletion one if it is a number",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+         {
+            "name": "token",
+            "in": "header",
+            "description": "User token",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "token":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "token": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+                }
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "Type of consultant that prices belongs to him",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "properties":{
+                "type":{
+                  "type": "string",
+                  }
+              },
+              "example":{
+                "type": "educational"
+                }
+            }
+          },
+          {
+            "in": "query",
+            "name": "cost",
+            "description": "cost of price. if it is 'all' this request deletes all prices and if is a number it deletes price with that cost",
+            "required": true,
+             "schema": {
+              "type": "object",
+              "example":{
+                "cost": 500000
+              },
+            }
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "successful deletion",
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "406": {
+            "description": "Not verified user of consultant with this type doesn't exist"
+          }
+        }
+      }
+    },
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+      "generate_otp": {
+      "type": "object",
+      "properties": {
+        "phone_number": {
+          "type": "string",
+          "format": "+989999999999"
+        },
+      },
+    },
+      "verify_otp": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "format": "929721764c07e7d802c0c15448eb35e1fdf949ca"
+        },
+      },
+    },
+    "Price": {
+      "type": "object",
+      "properties": {
+        "times": {
+          "type": "string",
+        },
+        "cost": {
+          "type": "integer"
+        }
+      },
+      "example":{
+        "times": "1,2,3",
+        "cost": 550000,
+      },
+    },
+    "User": {
+      "type": "object",
+      "properties":{
+        "email":{
+          "type": "string",
+          "format": "email",
+          },
+        "first_name":{
+          "type": "string",
+          "maxLength": 20,
+          },
+        "last_name":{
+          "type": "string",
+          "maxLength": 20,
+          },
+        "image":{
+          "type": "image",
+          },
+        "username":{
+          "type": "string",
+          },
+        "phone_number":{
+          "type": "string",
+          },
+        "is_super_user":{
+          "type": "boolean",
+          },
+        "phone_verified":{
+          "type": "boolean",
+          }
+      },
+      "example":{
+        "email": "example@gmail.com",
+        "first_name": "Majid",
+        "last_name": "Adibian",
+        "username": "Zeus33",
+        "phone_number": "+989999999999",
+        "is_super_user": false,
+        "phone_verified": true,
+      },
+    },
+    "Credit": {
+      "type": "object",
+      "properties":{
+        "credit":{
+          "type": "number",
+          },
+        "currency":{
+          "type": "string",
+          },
+      },
+      "example":{
+        "credit": 500000,
+        "currency": "IRR",
+      },
+    },
+    "consultant": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+        },
+        "presentation": {
+          "type": "string"
+        }
+      },
+      "example":{
+        "type": "sports",
+        "presentation": "some thing about you as consultant",
+      },
+    },
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
